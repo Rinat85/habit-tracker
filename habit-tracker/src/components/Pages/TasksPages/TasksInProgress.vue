@@ -5,5 +5,7 @@
 </script>
 
 <template>
-    <TasksInProgressApp />
+    <div class="bg-indigo-200 min-h-screen">
+        <TasksInProgressApp />
+    </div>
 </template>

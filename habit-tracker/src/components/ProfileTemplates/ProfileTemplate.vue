@@ -43,15 +43,15 @@
             </button>
         </div>
         <section class="flex justify-center gap-40 py-20">
-            <div class="flex flex-col gap-3 p-5 bg-white rounded-[4px] text-center shadow-xl">
+            <div class="flex flex-col gap-3 p-6 bg-white rounded-[4px] text-center shadow-xl">
                 <span>Всего привычек</span>
                 <span></span>
             </div>
-             <div class="flex flex-col gap-3 py-5 px-10 bg-white rounded-[4px] text-center shadow-xl">
+             <div class="flex flex-col gap-3 py-6 px-12 bg-white rounded-[4px] text-center shadow-xl">
                 <span>В процессе</span>
                 <span></span>
             </div>
-             <div class="flex flex-col gap-3 py-5 px-8 bg-white rounded-[4px] text-center shadow-xl">
+             <div class="flex flex-col gap-3 py-6 px-10 bg-white rounded-[4px] text-center shadow-xl">
                 <span>Выполненно</span>
                 <span></span>
             </div>

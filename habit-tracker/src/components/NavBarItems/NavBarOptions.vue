@@ -1,13 +1,35 @@
 <script setup>
+    import { computed } from 'vue'
+    import { useRoute } from 'vue-router'
+
     import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
     import { ChevronDownIcon } from '@heroicons/vue/20/solid'
+
+    const route = useRoute()
+
+    const isCompletedPage = computed(() => route.path === '/tasks' 
+        || route.path === '/un/completed/tasks' || route.path === '/in/progress/tasks'
+        || route.path === '/calendar'
+    )
+    const isInProgressPage = computed(() => route.path === '/tasks' 
+        || route.path === '/un/completed/tasks' || route.path === '/completed/tasks'
+        || route.path === '/calendar'
+    )
+    const isUnCompletedPage = computed(() => route.path === '/tasks' 
+        || route.path === '/completed/tasks' || route.path === '/in/progress/tasks'
+        || route.path === '/calendar' 
+    )
+    const isCalendarPage = computed(() => route.path === '/tasks' 
+        || route.path === '/completed/tasks' || route.path === '/in/progress/tasks'
+        || route.path === '/un/completed/tasks' 
+    )
 </script>
 
 <template>
-  <Menu as="div" class="relative inline-block">
+  <Menu as="div" class="relative inline-block p-6">
     <MenuButton class="inline-flex w-full justify-center gap-x-1.5 rounded-md text-white rounded-lg 
                                 bg-gradient-to-b from-indigo-400 to-indigo-600 shadow-xl 
-                                shadow-indigo-500/40 active:scale-95 transition p-4 text-sm font-semibold 
+                                shadow-indigo-500/40 active:scale-95 transition py-4 px-6 text-sm font-semibold 
                                 text-white inset-ring-1 inset-ring-white/5 hover:bg-gray-500">
       Опции
       <ChevronDownIcon class="-mr-1 size-5 text-white" aria-hidden="true" />
@@ -27,8 +49,8 @@
             </router-link>
           </MenuItem>
           <MenuItem v-slot="{ active }">
-            <router-link to="">
-                <span :class="[
+            <router-link to="/calendar">
+                <span v-if="isCalendarPage" :class="[
                         active ? 'bg-white/25 text-white outline-hidden' : 
                         'text-white', 'block px-4 py-2 text-sm'
                     ]">
@@ -39,18 +61,28 @@
         </div>
         <div class="py-1">
           <MenuItem v-slot="{ active }">
-            <router-link to="/completed/tasks">
+            <router-link to="/tasks">
                 <span :class="[
                         active ? 'bg-white/25 text-white outline-hidden' : 
                         'text-white', 'block px-4 py-2 text-sm'
                     ]">
-                    Выполненные
+                    Все привычки
+                </span>
+            </router-link>
+          </MenuItem>
+          <MenuItem v-slot="{ active }">
+            <router-link to="/completed/tasks">
+                <span v-if="isCompletedPage" :class="[
+                        active ? 'bg-white/25 text-white outline-hidden' : 
+                        'text-white', 'block px-4 py-2 text-sm'
+                    ]">
+                    Выполненые
                 </span>
             </router-link>
           </MenuItem>
           <MenuItem v-slot="{ active }">
             <router-link to="/in/progress/tasks">
-                <span :class="[
+                <span v-if="isInProgressPage" :class="[
                         active ? 'bg-white/25 text-white outline-hidden' : 
                         'text-white', 'block px-4 py-2 text-sm'
                     ]">
@@ -59,12 +91,12 @@
             </router-link>
           </MenuItem>
           <MenuItem v-slot="{ active }">
-            <router-link to="">
-                <span :class="[
+            <router-link to="/un/completed/tasks">
+                <span v-if="isUnCompletedPage" :class="[
                         active ? 'bg-white/25 text-white outline-hidden' : 
                         'text-white', 'block px-4 py-2 text-sm'
                     ]">
-                    Не выполненные
+                    Не выполненые
                 </span>
             </router-link>
           </MenuItem>

@@ -10,8 +10,8 @@
     const user = ref(null)
     const urlUser = ref(`http://localhost:3000/users/${userId}`)
 
-    const tasks = ref([])
-    const urlTasks = ref(`http://localhost:3000/tasks`)
+    const userTasks = ref([])
+    const urlUserTasks = ref(`http://localhost:3000/tasks?userId=${userId}`)
 
     const newUserName = ref('')
 
@@ -22,15 +22,18 @@
     const habit = ref('')
     const time = ref('')
     const category = ref('')
-    const progress = ref('')
+    const progress = ref('Не выполнено')
+    const frequency = ref('')
 
     const errorHabitMessage = ref('')
     const errorTimeMessage = ref('')
     const errorCategoryMessage = ref('')
+    const errorFrequencyMessage = ref('')
 
     const habitError = ref(false)
     const timeError = ref(false) 
     const categoryError = ref(false)
+    const frequencyError = ref(false)
 
     const taskModalVisible = ref(false)
 
@@ -94,16 +97,18 @@
         habitError.value = !habit.value
         timeError.value = !time.value
         categoryError.value = !category.value
+        frequencyError.value = !frequency.value
 
         errorHabitMessage.value = habitError.value ? 'Поле привычки обязателно' : ''
         errorTimeMessage.value = timeError.value ? 'Поле времени обязателно' : ''
         errorCategoryMessage.value = categoryError.value ? 'Поле категории обязателно' : ''
+        errorFrequencyMessage.value = frequencyError.value ? 'Поле частоты выполнения обязательно' : ''
 
         if(habitError.value || timeError.value || categoryError.value){
             return
         }else{
             try{
-                const res = await fetch(urlTasks.value, {
+                const res = await fetch(urlUserTasks.value, {
                     method: 'POST',
                     headers: {
                         "Content-Type": "application/json",
@@ -112,6 +117,7 @@
                         habit: habit.value,
                         time: time.value,
                         category: category.value,
+                        frequency: frequency.value,
                         progress: progress.value,
                         dateCreatedTask: new Date(),
                         userId: Number(userId)
@@ -123,24 +129,26 @@
             }
 
             const newTask = await res.json()
-            tasks.value.push(newTask)
+            userTasks.value.push(newTask)
 
-            taskModalVisible.value = false
+            hideTaskModal()
             }catch(error){
                 console.log('Не удалось добваить привычку', error)
-            }finally{
-                errorHabitMessage.value = ''
-                errorTimeMessage.value = ''
-                errorCategoryMessage.value = ''
-
-                habitError.value = false
-                timeError.value = false
-                categoryError.value = false
             }
         }
     }
 
     const hideTaskModal = () => {
+        errorHabitMessage.value = ''
+        errorTimeMessage.value = ''
+        errorCategoryMessage.value = ''
+        errorFrequencyMessage.value = ''
+
+        habitError.value = false
+        timeError.value = false
+        categoryError.value = false
+        frequencyError.value = false
+
         taskModalVisible.value = false
     }
 
@@ -168,6 +176,11 @@ watch(category, (newValue) => {
     }
 })
 
+watch(frequency, (newValue) => {
+    if(newValue){
+        frequencyError.value = false
+    }
+})
 
 onMounted(async () => {
     await getUser();
@@ -181,9 +194,10 @@ onMounted(async () => {
                 :error-new-user-name-message="errorNewUserNameMessage"/>
 
         <TaskModal v-show="taskModalVisible" @hide="hideTaskModal" @create-task="createTask" 
-                    v-model:habit="habit" v-model:time="time" v-model:category="category"
-                    :habit-error="habitError" :time-error="timeError" :category-error="categoryError"
-                    :error-habit-message="errorHabitMessage" :error-time-message="errorTimeMessage" 
-                    :error-category-message="errorCategoryMessage" />
+                    v-model:habit="habit" v-model:time="time" v-model:category="category" v-model:frequency="frequency"
+                    :habit-error="habitError" :time-error="timeError" :category-error="categoryError" 
+                    :frequency-error="frequencyError" :error-habit-message="errorHabitMessage" 
+                    :error-time-message="errorTimeMessage" :error-category-message="errorCategoryMessage" 
+                    :error-frequency-message="errorFrequencyMessage" />
     </Wrapper>
 </template>

@@ -2,7 +2,7 @@
     import TaskOptions from './TaskOptions.vue';
 
     const props = defineProps({
-        task: {
+        userTask: {
             type: Object
         }
     })
@@ -16,10 +16,10 @@
 </script>
 
 <template>
-        <li class="h-[210px] w-[400px] bg-white p-6 rounded-xl shadow-xl flex flex-col">
+        <li class="h-[210px] w-[300px] bg-white p-6 rounded-xl shadow-xl flex flex-col">
             <div class="flex justify-between">
-                <h1 class="text-xl italic">{{ task.category }}</h1>
-                <p class="text-gray-500 text-md">{{ new Date(task.dateCreatedTask).toLocaleDateString
+                <h1 class="text-lg italic">{{ userTask.category }}</h1>
+                <p class="text-gray-500">{{ new Date(userTask.dateCreatedTask).toLocaleDateString
                                     ("ru-RU", {
                                         hour: "2-digit",
                                         minute: "2-digit"
@@ -27,16 +27,17 @@
                                 }}
                 </p>
             </div>
-            <div class="flex justify-between items-center py-4">
-                <div class="flex flex-col gap-2">
-                    <h2 class="text-lg">{{ task.habit }}</h2>
-                    <p class="text-gray-500 text-md px-2">{{ task.time }}</p>
+            <div class="flex justify-between items-center py-2">
+                <div class="flex flex-col gap-1">
+                    <h2 class="text-lg">{{ userTask.habit }}</h2>
+                    <p class="text-gray-500 text-md px-2">{{ userTask.frequency }}</p>
+                    <p class="text-gray-500 text-md px-2">{{ userTask.time }}</p>
                 </div>
             </div>
             <div class="flex justify-between items-center">
-                <p class="italic text-sm">{{ task.progress }}</p>
-                <TaskOptions @delete-task="deleteTask(task.id)" @add-complete="addInComplete(task.id)"
-                            @add-in-progress="addInProgress(task.id)"/>
+                <p class="italic text-sm">{{ userTask.progress }}</p>
+                <TaskOptions @delete-task="deleteTask(userTask.id)" @add-in-complete="addInComplete(userTask.id)"
+                            @add-in-progress="addInProgress(userTask.id)" />
             </div>
         </li>
 </template>

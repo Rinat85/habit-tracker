@@ -1,16 +1,25 @@
 <script setup>
+    import TaskOptions from './TaskOptions.vue';
+
     const props = defineProps({
-        completedTask: {
+        completedUserTask : {
             type: Object
         }
     })
+
+    const emit = defineEmits([
+      'deleteTask', 'addInComplete', 'addInProgress'
+    ])
+    const deleteTask = (id) => emit('deleteTask', id)
+    const addInComplete = (id) => emit('addInComplete', id)
+    const addInProgress = (id) => emit('addInProgress', id)
 </script>
 
 <template>
-        <li class="h-[210px] w-[400px] bg-white p-6 rounded-xl shadow-xl flex flex-col">
+        <li class="h-[210px] w-[300px] bg-white p-6 rounded-xl shadow-xl flex flex-col">
             <div class="flex justify-between">
-                <h1 class="text-2xl">{{ completedTask.category }}</h1>
-                <p class="text-gray-500 text-md">{{ new Date(completedTask.dateCreatedTask).toLocaleDateString
+                <h1 class="text-lg italic">{{ completedUserTask.category }}</h1>
+                <p class="text-gray-500">{{ new Date(completedUserTask.dateCreatedTask).toLocaleDateString
                                     ("ru-RU", {
                                         hour: "2-digit",
                                         minute: "2-digit"
@@ -18,15 +27,17 @@
                                 }}
                 </p>
             </div>
-            <div class="flex justify-between items-center py-4">
-                <div class="flex flex-col gap-2">
-                    <h2 class="text-xl">{{ completedTask.habit }}</h2>
-                    <p class="text-gray-500 text-md px-2">{{ completedTask.time }}</p>
+            <div class="flex justify-between items-center py-2">
+                <div class="flex flex-col gap-1">
+                    <h2 class="text-lg">{{ completedUserTask.habit }}</h2>
+                    <p class="text-gray-500 text-md px-2">{{ completedUserTask.frequency }}</p>
+                    <p class="text-gray-500 text-md px-2">{{ completedUserTask.time }}</p>
                 </div>
             </div>
             <div class="flex justify-between items-center">
-                <p class="italic text-sm">{{ completedTask.progress }}</p>
-                <TaskOptions @delete-task="deleteTask(task.id)"/>
+                <p class="italic text-sm">{{ completedUserTask.progress }}</p>
+                <TaskOptions @delete-task="deleteTask(completedUserTask.id)" @add-in-complete="addInComplete(completedUserTask.id)"
+                            @add-in-progress="addInProgress(completedUserTask.id)" />
             </div>
         </li>
 </template>

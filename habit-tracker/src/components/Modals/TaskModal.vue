@@ -2,6 +2,7 @@
     const habit = defineModel('habit')
     const time = defineModel('time')
     const category = defineModel('category')
+    const frequency = defineModel('frequency')
 
     const props = defineProps({
         errorHabitMessage: {
@@ -13,6 +14,9 @@
         errorCategoryMessage: {
             type: String
         },
+        errorFrequencyMessage: {
+            type: String
+        },
         habitError: {
             type: Boolean
         },
@@ -20,6 +24,9 @@
             type: Boolean
         },
         categoryError: {
+            type: Boolean
+        },
+        frequencyError: {
             type: Boolean
         }
     })
@@ -48,13 +55,15 @@
                             class="bg-gray-300 outline-none rounded-[4px] p-4 w-full"/>
                     <span v-if="timeError" class="text-sm text-red-500">{{ errorTimeMessage }}</span>
                 </div>
-
-                <select class="bg-gray-300 outline-none rounded-[4px] p-4 text-gray-600">
-                        <option disabled value="">Выберите частоту</option>
-                        <option>Eжедневно</option>
-                        <option>1 раз в неделю</option>
-                        <option>3 раза в неделю</option>    
-                </select>
+                <div class="flex flex-col gap-3">
+                    <select v-model="frequency" class="bg-gray-300 outline-none rounded-[4px] px-3 py-4 text-gray-500">
+                            <option disabled value="">Выберите частоту</option>
+                            <option>Eжедневно</option>
+                            <option>1 раз в неделю</option>
+                            <option>3 раза в неделю</option>    
+                    </select>
+                    <span v-if="frequencyError" class="text-sm text-red-500">{{ errorFrequencyMessage }}</span>
+                </div>
                 <div class="flex flex-col gap-3">
                     <input type="text" v-model="category" placeholder="Категория (например, здоровье, учеба)"
                             class="bg-gray-300 outline-none rounded-[4px] p-4"/>
