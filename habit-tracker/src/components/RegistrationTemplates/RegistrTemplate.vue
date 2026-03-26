@@ -1,5 +1,45 @@
 <script setup>
+    import { ref } from 'vue'
 
+    const userName = defineModel('userName')
+    const eMail = defineModel('eMail')
+    const password = defineModel('password')
+
+    const props = defineProps({
+        userNameError: {
+            type: Boolean
+        },
+        eMailError: {
+            type: Boolean
+        },
+        passwordError: {
+            type: Boolean
+        },
+        errorUserNameMessage: {
+            type: String 
+        },
+        errorEMailMessage: {
+            type: String 
+        },
+        errorPasswordMessage: {
+            type: String
+        },
+    })
+
+    const emit = defineEmits([
+        'createUser'
+    ])
+    const createUser = () => emit('createUser')
+
+    const showPassword = ref(false) 
+
+    const togglePassword = () => {
+        showPassword.value = !showPassword.value
+    }
+
+    const toLower = () => {
+        userName.value = userName.value.toLowerCase()
+    }
 </script>
 
 <template>
@@ -7,13 +47,25 @@
         <div class="flex flex-col gap-8">
             <h1 class="text-3xl">Регистрация</h1>
             <div class="flex flex-col gap-6 w-[600px]">
-                <input type="text" placeholder="Имя" class="bg-gray-300 outline-none rounded-[4px] p-4">
-                <input type="text" placeholder="E-mail" class="bg-gray-300 outline-none rounded-[4px] p-4">
-                <input type="text" placeholder="Пароль" class="bg-gray-300 outline-none rounded-[4px] p-4">
+                <div class="flex flex-col gap-3">
+                    <input type="text" v-model="userName" @input="toLower" placeholder="Имя" class="bg-gray-300 outline-none 
+                            rounded-[4px] p-4">
+                    <span v-if="userNameError" class="text-sm text-red-500">{{ errorUserNameMessage }} dsdfsf</span>
+                </div>
+                <div class="flex flex-col gap-3">
+                    <input type="text" v-model="eMail" placeholder="E-mail" class="bg-gray-300 outline-none 
+                            rounded-[4px] p-4">
+                    <span v-if="eMailError" class="text-sm text-red-500">{{ errorEMailMessage }}</span>
+                </div>
+                <div class="flex flex-col gap-3">
+                    <input type="text" v-model="password" placeholder="Пароль" class="bg-gray-300 outline-none 
+                            rounded-[4px] p-4">
+                    <span v-if="passwordError" class="text-sm text-red-500">{{ errorPasswordMessage }}</span>
+                </div>
             </div>
             <div class="flex justify-center">
-                <button @click="addAccount" class="px-12 py-6 text-white rounded-lg bg-gradient-to-br 
-                            from-indigo-400 to-indigo-600 shadow-lg shadow-indigo-500/40
+                <button @click="createUser" class="px-12 py-6 text-white rounded-lg bg-gradient-to-b 
+                            from-indigo-400 to-indigo-600 shadow-xl shadow-indigo-500/40
                             active:scale-95 transition">
                     Зарегестрироваться
                 </button>

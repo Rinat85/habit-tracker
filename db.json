@@ -1,11 +1,25 @@
 {
-    "users": [
-
-    ],
-    "habits": [
-
-    ],
-    "record": [
-        
-    ]
+  "users": [
+    {
+      "id": "3165",
+      "userName": "3333",
+      "eMail": "akmalmavlonov25@gmail.com",
+      "password": "$2b$10$DV9KfFSG17a7B/WSaoumMuSYlrg8v8ne/yIqHQT/uXs8U8g/2XYvW",
+      "dateCreation": "2026-03-24T11:20:34.690Z",
+      "dateChangedUserName": "2026-03-25T08:53:14.015Z"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "40ab",
+      "habit": "Чтение",
+      "time": "30 мин",
+      "category": "Учеба",
+      "progress": "",
+      "dateCreatedTask": "2026-03-25T12:40:35.778Z",
+      "userId": 3165
+    }
+  ],
+  "record": [],
+  "$schema": "./node_modules/json-server/schema.json"
 }

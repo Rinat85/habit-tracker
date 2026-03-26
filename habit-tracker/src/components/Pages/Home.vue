@@ -12,15 +12,15 @@
         </p>
         <div class="flex gap-6 mt-14">
             <router-link to="/login">
-                <span class="px-19 py-6 text-white rounded-lg bg-gradient-to-br 
-                        from-indigo-400 to-indigo-600 shadow-lg shadow-indigo-500/40
+                <span class="px-20 py-6 text-white rounded-lg bg-gradient-to-b
+                        from-indigo-400 to-indigo-600 shadow-xl shadow-indigo-500/40
                         active:scale-95 transition">
                         Войти
                 </span>
             </router-link>
             <router-link to="/registration">
-                <span class="px-6 py-6 text-white rounded-lg bg-gradient-to-br 
-                        from-indigo-400 to-indigo-600 shadow-lg shadow-indigo-500/40
+                <span class="px-6 py-6 text-white rounded-lg bg-gradient-to-b
+                        from-indigo-400 to-indigo-600 shadow-xl shadow-indigo-500/40
                         active:scale-95 transition">
                         Зарегестрироваться
                 </span>
