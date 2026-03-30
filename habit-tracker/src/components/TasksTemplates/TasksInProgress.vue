@@ -35,7 +35,12 @@
                 </div>
             </div>
             <div class="flex justify-between items-center">
-                <p class="italic text-sm">{{ inProgressUserTask.progress }}</p>
+                <p class="italic text-sm px-2 py-1.5 rounded"
+                    :class="{
+                        'bg-green-500 text-white': inProgressUserTask.progress === 'Выполнено',
+                        'bg-purple-500 text-white': inProgressUserTask.progress === 'В процессе',
+                        'bg-rose-500 text-white': inProgressUserTask.progress === 'Не выполнено'
+                    }">{{ inProgressUserTask.progress }}</p>
                 <TaskOptions @delete-task="deleteTask(inProgressUserTask.id)" @add-in-complete="addInComplete(inProgressUserTask.id)"
                             @add-in-progress="addInProgress(inProgressUserTask.id)" />
             </div>

@@ -16,7 +16,7 @@
 </script>
 
 <template>
-        <li class="h-[210px] w-[300px] bg-white p-6 rounded-xl shadow-xl flex flex-col">
+        <li class="h-[210px] w-[300px] bg-white px-6 py-4 rounded-xl shadow-xl flex flex-col">
             <div class="flex justify-between">
                 <h1 class="text-lg italic">{{ unCompletedUserTask.category }}</h1>
                 <p class="text-gray-500">{{ new Date(unCompletedUserTask.dateCreatedTask).toLocaleDateString
@@ -34,8 +34,13 @@
                     <p class="text-gray-500 text-md px-2">{{ unCompletedUserTask.time }}</p>
                 </div>
             </div>
-            <div class="flex justify-between items-center">
-                <p class="italic text-sm">{{ unCompletedUserTask.progress }}</p>
+            <div class="flex justify-between items-center mt-4">
+                <p class="italic text-sm px-2 py-1.5 rounded"
+                    :class="{
+                        'bg-green-500 text-white': unCompletedUserTask.progress === 'Выполнено',
+                        'bg-purple-500 text-white': unCompletedUserTask.progress === 'В процессе',
+                        'bg-rose-500 text-white': unCompletedUserTask.progress === 'Не выполнено'
+                    }">{{ unCompletedUserTask.progress }}</p>
                 <TaskOptions @delete-task="deleteTask(unCompletedUserTask.id)" @add-in-complete="addInComplete(unCompletedUserTask.id)"
                             @add-in-progress="addInProgress(unCompletedUserTask.id)" />
             </div>

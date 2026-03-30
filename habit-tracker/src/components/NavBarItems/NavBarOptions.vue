@@ -5,24 +5,20 @@
     import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
     import { ChevronDownIcon } from '@heroicons/vue/20/solid'
 
-    const route = useRoute()
+    const props = defineProps({
+      progress: {
+        type: String
+      }
+    })
 
-    const isCompletedPage = computed(() => route.path === '/tasks' 
-        || route.path === '/un/completed/tasks' || route.path === '/in/progress/tasks'
-        || route.path === '/calendar'
-    )
-    const isInProgressPage = computed(() => route.path === '/tasks' 
-        || route.path === '/un/completed/tasks' || route.path === '/completed/tasks'
-        || route.path === '/calendar'
-    )
-    const isUnCompletedPage = computed(() => route.path === '/tasks' 
-        || route.path === '/completed/tasks' || route.path === '/in/progress/tasks'
-        || route.path === '/calendar' 
-    )
-    const isCalendarPage = computed(() => route.path === '/tasks' 
-        || route.path === '/completed/tasks' || route.path === '/in/progress/tasks'
-        || route.path === '/un/completed/tasks' 
-    )
+    const route = useRoute()
+    
+    const isAllPage = computed(() => route.path !== '/tasks')
+    const isProfilePage = computed(() => route.path !== '/profile')
+    const isCompletedPage = computed(() => route.path !== '/completed/tasks' )
+    const isInProgressPage = computed(() => route.path !== '/in/progress/tasks')
+    const isUnCompletedPage = computed(() => route.path !== '/un/completed/tasks')
+    const isCalendarPage = computed(() => route.path !== '/calendar')
 </script>
 
 <template>
@@ -40,7 +36,7 @@
         <div class="py-1">
           <MenuItem v-slot="{ active }">
             <router-link to="/profile">
-                <span :class="[
+                <span v-if="isProfilePage" :class="[
                         active ? 'bg-white/25 text-white outline-hidden' : 
                         'text-white', 'block px-4 py-2 text-sm'
                     ]">
@@ -60,7 +56,7 @@
           </MenuItem>
         </div>
         <div class="py-1">
-          <MenuItem v-slot="{ active }">
+          <MenuItem v-if="isAllPage" v-slot="{ active }">
             <router-link to="/tasks">
                 <span :class="[
                         active ? 'bg-white/25 text-white outline-hidden' : 

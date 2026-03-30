@@ -4,6 +4,9 @@
     const props = defineProps({
         userTask: {
             type: Object
+        }, 
+        progressTask: {
+            type: Boolean
         }
     })
 
@@ -35,9 +38,16 @@
                 </div>
             </div>
             <div class="flex justify-between items-center">
-                <p class="italic text-sm">{{ userTask.progress }}</p>
+                <p class="italic text-sm px-2 py-1.5 rounded"
+                    :class="{
+                        'bg-green-500 text-white': userTask.progress === 'Выполнено',
+                        'bg-purple-500 text-white': userTask.progress === 'В процессе',
+                        'bg-rose-500 text-white': userTask.progress === 'Не выполнено'
+                    }">
+                    {{ userTask.progress }}
+                </p>
                 <TaskOptions @delete-task="deleteTask(userTask.id)" @add-in-complete="addInComplete(userTask.id)"
-                            @add-in-progress="addInProgress(userTask.id)" />
+                            @add-in-progress="addInProgress(userTask.id)" :progress="userTask.progress" />
             </div>
         </li>
 </template>

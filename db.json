@@ -1,24 +1,36 @@
 {
   "users": [
     {
-      "id": "3165",
-      "userName": "3333",
+      "id": "b928",
+      "userName": "sadad",
       "eMail": "akmalmavlonov25@gmail.com",
-      "password": "$2b$10$DV9KfFSG17a7B/WSaoumMuSYlrg8v8ne/yIqHQT/uXs8U8g/2XYvW",
-      "dateCreation": "2026-03-24T11:20:34.690Z",
-      "dateChangedUserName": "2026-03-25T08:53:14.015Z"
+      "password": "$2b$10$BAlTGr47Du4XnXnR4Qp/aeJf/x.fE9NbjbpgO/TUN6DEfxFwHv.Ci",
+      "allTasksCurrent": 0,
+      "inProgressTasksCurrent": 0,
+      "completedTasksCurrent": 0,
+      "dateCreation": "2026-03-30T11:52:16.125Z"
     }
   ],
   "tasks": [
     {
-      "id": "959d",
-      "habit": "ewr",
-      "time": "ewrewr",
-      "category": "werew",
-      "frequency": "Eжедневно",
+      "id": "e4c8",
+      "habit": "ada",
+      "time": "qweqw",
+      "category": "qweqw",
+      "frequency": "3 раза в неделю",
       "progress": "Выполнено",
-      "dateCreatedTask": "2026-03-26T11:59:23.765Z",
-      "userId": 3165
+      "dateCreatedTask": "2026-03-30T11:06:03.190Z",
+      "userId": null
+    },
+    {
+      "id": "e744",
+      "habit": "qwe",
+      "time": "qwewqe",
+      "category": "eqwewq",
+      "frequency": "1 раз в неделю",
+      "progress": "Не выполнено",
+      "dateCreatedTask": "2026-03-30T11:52:02.008Z",
+      "userId": "33b6"
     }
   ],
   "record": [],

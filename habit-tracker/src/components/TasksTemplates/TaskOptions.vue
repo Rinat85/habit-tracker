@@ -5,6 +5,12 @@
     import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
     import { ChevronDownIcon } from '@heroicons/vue/20/solid'
 
+    const props = defineProps({
+      progress: {
+        type: String
+      }
+    })
+
     const emit = defineEmits([
       'deleteTask', 'addInComplete', 'addInProgress'
     ])
@@ -14,11 +20,11 @@
 
     const route = useRoute()
 
-    const isCompletedPage = computed(() => route.path === '/tasks' || route.path === '/un/completed/tasks'
-    )
-    const isInProgressPage = computed(() => route.path === '/in/progress/tasks' 
-        || route.path === '/tasks' || route.path === '/un/completed/tasks'
-    )
+    const isCompletedPage = computed(() => route.path !== '/completed/tasks')
+    const isInProgressPage = computed(() => route.path !== '/in/progress/tasks')
+
+    const canAddInCompleted = computed(() => props.progress !== 'Выполнено')
+    const canAddInProgress = computed(() => props.progress !== 'В процессе' && props.progress !== 'Выполнено')
 </script>
 
 <template>
@@ -33,8 +39,8 @@
 
     <transition enter-active-class="transition ease-out duration-100" enter-from-class="transform opacity-0 scale-95" enter-to-class="transform scale-100" leave-active-class="transition ease-in duration-75" leave-from-class="transform scale-100" leave-to-class="transform opacity-0 scale-95">
       <MenuItems class="absolute right-0 z-10 mt-2 w-38 origin-top-right divide-y divide-white/40 rounded-md bg-indigo-400 outline-1 -outline-offset-1 outline-white/10">
-        <div v-if="isInProgressPage" class="py-1">
-          <MenuItem v-slot="{ active }">
+        <div v-if="isCompletedPage">
+          <MenuItem v-if="canAddInCompleted" v-slot="{ active }">
             <button @click="addInComplete" class="w-full text-start">
               <span :class="[
                       active ? `bg-white/25 text-white outline-hidden` : 
@@ -45,8 +51,8 @@
             </button>
           </MenuItem>
         </div>
-        <div v-if="isCompletedPage" class="py-1">
-            <MenuItem v-slot="{ active }">
+        <div v-if="isInProgressPage">
+            <MenuItem v-if="canAddInProgress"  v-slot="{ active }">
               <button @click="addInProgress" class="w-full text-start">
                 <span :class="[
                         active ? 'bg-white/25 text-white outline-hidden' : 

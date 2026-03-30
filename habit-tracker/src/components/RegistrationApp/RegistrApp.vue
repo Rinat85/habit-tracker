@@ -20,6 +20,10 @@
     const eMailError = ref(false)
     const passwordError = ref(false)
 
+    const allTasksCurrent = ref(0)
+    const inProgressTasksCurrent = ref(0)
+    const completedTasksCurrent = ref(0)
+
     const isValidEmail = (email) => {
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
     }
@@ -48,6 +52,9 @@
                             userName: userName.value,
                             eMail: eMail.value,
                             password: hashedPassword,
+                            allTasksCurrent: allTasksCurrent.value,
+                            inProgressTasksCurrent: inProgressTasksCurrent.value,
+                            completedTasksCurrent: completedTasksCurrent.value,
                             dateCreation: new Date()
                     })
                 })

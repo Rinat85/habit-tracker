@@ -1,7 +1,5 @@
 <script setup>
-    import { useRouter } from 'vue-router'
-
-    const router = useRouter()
+    import NavBarOptions from '../NavBarItems/NavBarOptions.vue'
 
     const newUserName = defineModel('newUserName')
 
@@ -14,49 +12,44 @@
         },
         errorNewUserNameMessage: {
             type: String
-        }
+        }     
     })
 
     const emit = defineEmits([
-        'showTaskModal', 'changeUserName'
+        'showTaskModal', 'changeUserName', 'showDelAccount', 'showExit'
     ])
 
     const showTaskModal = () => emit('showTaskModal')
     const changeUserName = () => emit('changeUserName')
-
+    const showDelAccount = () => emit('showDelAccount')
+    const showExit = () => emit('showExit')
 </script>
 
 <template>
     <div class="bg-indigo-200 min-h-screen">
-        <div class="flex justify-between items-center gap-4 p-5">
-            <router-link to="/tasks">
-                <span class="px-8 py-5 text-white rounded-lg bg-gradient-to-b
-                                from-indigo-400 to-indigo-600 shadow-xl shadow-indigo-500/40
-                                active:scale-95 transition">
-                    Вернуться
-                </span>
-            </router-link>
+        <div class="flex justify-between items-center gap-4">
+            <NavBarOptions />
             <button @click="showTaskModal" class="px-8 py-4 text-white rounded-lg bg-gradient-to-b
                             from-indigo-400 to-indigo-600 shadow-xl shadow-indigo-500/40
-                            active:scale-95 transition">
+                            active:scale-95 transition mx-5">
                 Добавить привычку
             </button>
         </div>
-        <section class="flex justify-center gap-40 py-20">
-            <div class="flex flex-col gap-3 p-6 bg-white rounded-[4px] text-center shadow-xl">
+        <section class="flex justify-center gap-32 py-18">
+            <div class="flex flex-col gap-3 py-6 px-7 bg-white rounded-[10px] text-center shadow-xl">
                 <span>Всего привычек</span>
-                <span></span>
+                <span>{{ user?.allTasksCurrent }}</span>
             </div>
-             <div class="flex flex-col gap-3 py-6 px-12 bg-white rounded-[4px] text-center shadow-xl">
+             <div class="flex flex-col gap-3 py-6 px-13 bg-white rounded-[10px] text-center shadow-xl">
                 <span>В процессе</span>
-                <span></span>
+                <span>{{ user?.inProgressTasksCurrent }}</span>
             </div>
-             <div class="flex flex-col gap-3 py-6 px-10 bg-white rounded-[4px] text-center shadow-xl">
-                <span>Выполненно</span>
-                <span></span>
+             <div class="flex flex-col gap-3 py-6 px-5 bg-white rounded-[10px] text-center shadow-xl">
+                <span>Всего выполненно</span>
+                <span>{{ user?.completedTasksCurrent }}</span>
             </div>
         </section>
-        <section class="flex justify-center py-15">
+        <section class="flex justify-center py-13">
             <div class="w-[850px]">
                 <div class="flex flex-col gap-6">
                     <span class="text-2xl">Текущее имя пользователя:</span>
@@ -70,11 +63,21 @@
                     </div>
                 </div>
                 <div class="flex justify-end mt-12">
-                    <button @click="changeUserName" class="px-10 py-5 text-white rounded-lg bg-gradient-to-b 
-                            from-indigo-400 to-indigo-600 shadow-xl shadow-indigo-500/40
-                            active:scale-95 transition">
-                        Применить
-                    </button>
+                    <div class="flex flex-col">
+                        <button @click="changeUserName" class="px-10 py-5 text-white rounded-lg bg-gradient-to-b 
+                                from-indigo-400 to-indigo-600 shadow-xl shadow-indigo-500/40
+                                active:scale-95 transition">
+                            Применить
+                        </button>
+                        <div class="flex flex-col gap-2 mt-2">
+                            <button @click="showExit" class="text-sm text-end mr-1">
+                                Выйти из аккаунта
+                            </button>
+                            <button @click="showDelAccount" class="text-sm text-end mr-1">
+                                Удалить аккаунт
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>

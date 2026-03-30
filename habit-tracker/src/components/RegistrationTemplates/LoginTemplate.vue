@@ -46,8 +46,13 @@
                     <span v-if="userNameError" class="text-sm text-red-500">{{ errorUserNameMessage }}</span>
                 </div>
                 <div class="flex flex-col gap-3"> 
-                    <input type="text" v-model="password" placeholder="Пароль" class="bg-gray-300 outline-none 
-                            rounded-[4px] p-4">
+                    <div class="relative">
+                        <input :type="showPassword ? 'text' : 'password'" v-model="password" placeholder="Пароль" 
+                                    class="bg-gray-300 outline-none rounded-[4px] p-4 w-full">
+                        <img @click="togglePassword" :src="showPassword ? 
+                            '/src/assets/icons/opened.png' : '/src/assets/icons/closed.png'" 
+                            class="w-[30px] h-[30px] absolute right-4 top-1/2 -translate-y-1/2 w-6 h-6 cursor-pointer">
+                    </div>
                     <span v-if="passwordError" class="text-sm text-red-500">{{ errorPasswordMessage }}</span>
                 </div>
             </div>

@@ -15,7 +15,7 @@
     <section class="fixed inset-0 z-50 bg-[rgba(0,0,0,0.5)]
                                 flex items-center justify-center">
         <div class="bg-white rounded-2xl w-[400px] h-[200px] shadow-xl">
-            <div class="flex flex-col justify-center items-center gap-y-8 pt-8">
+            <div class="flex flex-col justify-center items-center gap-y-8 pt-12">
                 <h2 class="text-2xl text-center">{{ message }}</h2>
                 <div class="flex justify-center gap-6">
                     <button @click="cancel" class="px-10 py-3 text-white rounded-lg bg-gradient-to-br 
