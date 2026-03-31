@@ -1,5 +1,6 @@
 <script setup>
-    import { ref, onMounted } from 'vue'
+    import { ref, onMounted, watch } from 'vue'
+    import { useDebounceFn } from "@vueuse/core"
 
     import NavBar from '../NavBarItems/NavBar.vue';
     import Wrapper from '../Slots/Wrapper.vue';
@@ -19,18 +20,20 @@
     const urlUserTasks = ref(`http://localhost:3000/tasks?userId=${userId}`)
     const urlTasks = ref(`http://localhost:3000/tasks`)
 
+    const searchInput = ref('')
+
     const deleteTaskModalVisible = ref(false)
 
     const sortByNewTasks = async () => {
         const res = await fetch(urlUserTasks.value)
         const data = await res.json()
-        userTasks.value = data.sort((a, b) => new Date(b.dateCreatedTask) - new Date(a.dateCreatedTask))
+        inProgressUserTasks.value = data.sort((a, b) => new Date(b.dateCreatedTask) - new Date(a.dateCreatedTask))
     }
 
     const sortByOldTasks = async () => {
         const res = await fetch(urlUserTasks.value)
         const data = await res.json()
-        userTasks.value = data.sort((a, b) => new Date(a.dateCreatedTask) - new Date(b.dateCreatedTask))
+        inProgressUserTasks.value = data.sort((a, b) => new Date(a.dateCreatedTask) - new Date(b.dateCreatedTask))
     }
 
     const getUser = async () => {
@@ -101,11 +104,11 @@
             
             await getInProgressUserTasks()
 
-
-            const newCompletedCurrent = user.value.completedTasksCurrent + 1
-            const newInProgressCurrent = user.value.inProgressTasksCurrent - 1
             
-            await fetch(urlUser.value, {
+            const newInProgressCurrent = (user.value.inProgressTasksCurrent ?? 0) - 1 
+            const newCompletedCurrent = (user.value.completedTasksCurrent ?? 0) + 1
+
+            const resUser = await fetch(urlUser.value, {
                 method: 'PATCH',
                 headers: {
                     "Content-Type": "application/json",
@@ -115,6 +118,10 @@
                     inProgressTasksCurrent: newInProgressCurrent
                 })
             })
+
+            if(!resUser.ok){
+                throw new Error(`Ошибка HTTP: ${resUser.status}`);
+            }
 
             await getUser()
 
@@ -144,33 +151,25 @@
             inProgressUserTasks.value = inProgressUserTasks.value.filter(t => t.id !== userTaskId.value)
 
 
-            const newAllCurrent = user.value.allTasksCurrent - 1
             const newInProgressCurrent = user.value.inProgressTasksCurrent - 1
             
             if(user.value.inProgressTasksCurrent > 0){
-                await fetch(urlUser.value, {
+                const resUser = await fetch(urlUser.value, {
                     method: 'PATCH',
                     headers: {
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify({
-                        allTasksCurrent: newAllCurrent,
                         inProgressTasksCurrent: newInProgressCurrent
                     })
                 })
-            }else{
-                await fetch(urlUser.value, {
-                    method: 'PATCH',
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        allTasksCurrent: newAllCurrent,
-                    })
-                })
-            }
 
-            await getUser()
+                if(!resUser.ok){
+                    throw new Error(`Ошибка HTTP: ${resUser.status}`);
+                }
+
+                await getUser()
+            }
             
             hideDeleteTaskModal()
         }catch(error){
@@ -184,6 +183,42 @@
         deleteTaskModalVisible.value = false
     }
 
+    const searchTasks = async () => {
+        const query = searchInput.value
+
+        try{
+            if(!query){
+                getUserTasks()
+                return
+            }
+            
+            const res = await fetch(`${urlUserTasks.value}&habit=${query}`, {
+                method: 'GET'
+            })
+
+            if(!res.ok){
+                throw new Error(`Ошибка HTTP: ${res.status}`);
+            }
+
+            const data = await res.json()
+            inProgressUserTasks.value = data.sort((a, b) => new Date(b.dateCreatedTask) - new Date(a.dateCreatedTask))
+        }catch(error){
+            console.log('Не удалось найти данные', error)
+        }
+    }
+
+    const debouncedSearch = useDebounceFn(() => {
+        searchTasks()
+    }, 500)
+
+watch(searchInput, (newValue) => {
+    if(newValue){
+        debouncedSearch()
+    }else{
+        getInProgressUserTasks()
+    }
+})
+
 onMounted(async () => {
     await getUserTasks();
     await getInProgressUserTasks();
@@ -193,7 +228,7 @@ onMounted(async () => {
 
 <template>
     <Wrapper>
-        <NavBar @sort-by-new="sortByNewTasks" @sort-by-old="sortByOldTasks" />
+        <NavBar v-model:search-input="searchInput" @sort-by-new="sortByNewTasks" @sort-by-old="sortByOldTasks" />
             <div class="flex justify-center pt-15">
                 <ul class="grid grid-cols-4 gap-15 overflow-y-auto h-[580px] no-scrollbar pt-15">
                     <TasksInProgress v-for="inProgressUserTask in inProgressUserTasks" :key="inProgressUserTask.id" 

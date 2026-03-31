@@ -1,4 +1,6 @@
 <script setup>
+    import BaseButton from '../BaseButton/BaseButton.vue'
+    
     const habit = defineModel('habit')
     const time = defineModel('time')
     const category = defineModel('category')
@@ -71,16 +73,8 @@
                 </div>
             
                 <div class="flex justify-end gap-4 mt-2">
-                    <button @click="hide" class="px-7 py-4 text-white rounded-lg bg-gradient-to-b 
-                            from-rose-400 to-rose-600 shadow-xl shadow-rose-500/40
-                            active:scale-95 transition">
-                        Отмена
-                    </button>
-                    <button @click="createTask" class="p-4 text-white rounded-lg bg-gradient-to-b
-                            from-indigo-400 to-indigo-600 shadow-xl shadow-indigo-500/40
-                            active:scale-95 transition">
-                        Сохранить
-                    </button>
+                    <BaseButton button-type="Отмена" variant="cancelTaskModal" @click="hide" />
+                    <BaseButton button-type="Сохранить" variant="confirmTaskModal" @click="createTask" />
                 </div>
             </div>
         </div>

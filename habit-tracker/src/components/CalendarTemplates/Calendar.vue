@@ -1,5 +1,6 @@
 <script setup>
     import { computed } from 'vue'
+    import arrow from '@/assets/icons/arrow.png'
 
     const props = defineProps({
         userTasks: {
@@ -67,13 +68,17 @@
 
 <template>
     <div class="flex justify-center items-center py-10">
-        <div class="w-[600px] h-[600px] bg-white rounded-2xl shadow-xl p-6">
-            <div class="flex justify-between items-center pt-10 mb-10">
-                <button @click="last" class="p-2 rounded-lg">←</button>
+        <div class="w-[600px] h-[600px] bg-white rounded-2xl shadow-xl px-6 py-10">
+            <div class="flex justify-between items-center pt-10 mb-16">
+                <button @click="last" class="p-2 rounded-lg">
+                    <img :src="arrow" class="w-[25px] rotate-180">
+                </button>
                 <h2 class="text-lg font-semibold">{{ props.monthName }} {{ currentYear }}</h2>
-                <button @click="next" class="p-2 rounded-lg">→</button>
+                <button @click="next" class="p-2 rounded-lg">
+                    <img :src="arrow" class="w-[25px]">
+                </button>
             </div>
-            <div class="grid grid-cols-7 text-center text-gray-500 text-sm mb-5">
+            <div class="grid grid-cols-7 text-center text-gray-500 text-sm mb-3">
                 <div>Пн</div>
                 <div>Вт</div>
                 <div>Ср</div>

@@ -12,7 +12,6 @@
     ])
     const deleteTask = (id) => emit('deleteTask', id)
     const addInComplete = (id) => emit('addInComplete', id)
-    const addInProgress = (id) => emit('addInProgress', id)
 </script>
 
 <template>
@@ -41,8 +40,8 @@
                         'bg-purple-500 text-white': inProgressUserTask.progress === 'В процессе',
                         'bg-rose-500 text-white': inProgressUserTask.progress === 'Не выполнено'
                     }">{{ inProgressUserTask.progress }}</p>
-                <TaskOptions @delete-task="deleteTask(inProgressUserTask.id)" @add-in-complete="addInComplete(inProgressUserTask.id)"
-                            @add-in-progress="addInProgress(inProgressUserTask.id)" />
+                <TaskOptions @delete-task="deleteTask(inProgressUserTask.id)" 
+                            @add-in-complete="addInComplete(inProgressUserTask.id)" />
             </div>
         </li>
 </template>

@@ -5,23 +5,13 @@
       "userName": "sadad",
       "eMail": "akmalmavlonov25@gmail.com",
       "password": "$2b$10$BAlTGr47Du4XnXnR4Qp/aeJf/x.fE9NbjbpgO/TUN6DEfxFwHv.Ci",
-      "allTasksCurrent": 0,
+      "allTasksCurrent": 7,
       "inProgressTasksCurrent": 0,
-      "completedTasksCurrent": 0,
+      "completedTasksCurrent": 5,
       "dateCreation": "2026-03-30T11:52:16.125Z"
     }
   ],
   "tasks": [
-    {
-      "id": "e4c8",
-      "habit": "ada",
-      "time": "qweqw",
-      "category": "qweqw",
-      "frequency": "3 раза в неделю",
-      "progress": "Выполнено",
-      "dateCreatedTask": "2026-03-30T11:06:03.190Z",
-      "userId": null
-    },
     {
       "id": "e744",
       "habit": "qwe",

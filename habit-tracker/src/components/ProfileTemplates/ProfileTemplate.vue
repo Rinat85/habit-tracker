@@ -1,5 +1,7 @@
 <script setup>
-    import NavBarOptions from '../NavBarItems/NavBarOptions.vue'
+    import BaseButton from '../BaseButton/BaseButton.vue'
+import NavBarOptions from '../NavBarItems/NavBarOptions.vue'
+import ProfileOptions from './ProfileOptions.vue'
 
     const newUserName = defineModel('newUserName')
 
@@ -28,12 +30,14 @@
 <template>
     <div class="bg-indigo-200 min-h-screen">
         <div class="flex justify-between items-center gap-4">
-            <NavBarOptions />
-            <button @click="showTaskModal" class="px-8 py-4 text-white rounded-lg bg-gradient-to-b
+           <router-link to="/tasks">
+                <span class="px-8 py-5 text-white rounded-lg bg-gradient-to-b
                             from-indigo-400 to-indigo-600 shadow-xl shadow-indigo-500/40
                             active:scale-95 transition mx-5">
-                Добавить привычку
-            </button>
+                    Вернуться
+                </span>
+           </router-link>
+           <ProfileOptions @show-task-modal="showTaskModal" @show-exit="showExit" @show-del-account="showDelAccount" />
         </div>
         <section class="flex justify-center gap-32 py-18">
             <div class="flex flex-col gap-3 py-6 px-7 bg-white rounded-[10px] text-center shadow-xl">
@@ -64,19 +68,7 @@
                 </div>
                 <div class="flex justify-end mt-12">
                     <div class="flex flex-col">
-                        <button @click="changeUserName" class="px-10 py-5 text-white rounded-lg bg-gradient-to-b 
-                                from-indigo-400 to-indigo-600 shadow-xl shadow-indigo-500/40
-                                active:scale-95 transition">
-                            Применить
-                        </button>
-                        <div class="flex flex-col gap-2 mt-2">
-                            <button @click="showExit" class="text-sm text-end mr-1">
-                                Выйти из аккаунта
-                            </button>
-                            <button @click="showDelAccount" class="text-sm text-end mr-1">
-                                Удалить аккаунт
-                            </button>
-                        </div>
+                       <BaseButton button-type="Применить" variant="confirmEditProfile" @click="changeUserName" />
                     </div>
                 </div>
             </div>

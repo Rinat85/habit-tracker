@@ -1,5 +1,6 @@
 <script setup>
     import { ref } from 'vue'
+import BaseButton from '../BaseButton/BaseButton.vue'
 
     const userName = defineModel('userName')
     const eMail = defineModel('eMail')
@@ -69,11 +70,7 @@
                 </div>
             </div>
             <div class="flex justify-center">
-                <button @click="createUser" class="px-12 py-6 text-white rounded-lg bg-gradient-to-b 
-                            from-indigo-400 to-indigo-600 shadow-xl shadow-indigo-500/40
-                            active:scale-95 transition">
-                    Зарегестрироваться
-                </button>
+                <BaseButton button-type="Зарегестрироваться" variant="rigistration" @click="createUser" />
             </div>
         </div>
     </div>

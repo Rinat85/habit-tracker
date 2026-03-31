@@ -1,5 +1,6 @@
 <script setup>
     import { ref } from 'vue'
+    import BaseButton from '../BaseButton/BaseButton.vue'
 
     const userName = defineModel('userName')
     const password = defineModel('password')
@@ -57,11 +58,8 @@
                 </div>
             </div>
             <div class="flex justify-center">
-                <button @click="login" class="px-20 py-6 text-white rounded-lg bg-gradient-to-b
-                        from-indigo-400 to-indigo-600 shadow-xl shadow-indigo-500/40
-                        active:scale-95 transition">
-                    Войти
-                </button>
+                <BaseButton button-type="Войти" variant="login" @click="login" />
+
             </div>
         </div>
     </div>

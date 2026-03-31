@@ -1,5 +1,6 @@
 <script setup>
     import { computed } from 'vue'
+import BaseButton from '../BaseButton/BaseButton.vue'
     const props = defineProps({
         currentDate: {
             type: Date
@@ -43,11 +44,7 @@
             </ul>
             <span v-else class="italic text-gray-500">Пустой день</span>
             <div class="flex">
-                <button @click="hideTasks" class="mt-5 bg-gradient-to-b from-indigo-400 to-indigo-600 shadow-xl 
-                                text-white shadow-indigo-500/40 active:scale-95 transition py-4 px-6 
-                                text-sm rounded-[6px]">
-                    Закрыть
-                </button>
+                <BaseButton button-type="Закрыть" variant="closeTasksInDay" @click="hideTasks"/>
             </div>
         </div>
     </div>

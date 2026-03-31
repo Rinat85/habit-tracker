@@ -2,6 +2,8 @@
     import NavBarOptions from './NavBarOptions.vue';
     import SortOptions from './SortOptions.vue';
 
+    const searchInput = defineModel('searchInput')
+
     const emit = defineEmits([
       'sortByNew', 'sortByOld'
     ])
@@ -13,7 +15,7 @@
     <nav class="bg-white flex items-center">
         <NavBarOptions />
         <div class="flex-1 flex justify-center">
-            <input type="text" placeholder="Поиск" class="bg-gradient-to-b from-indigo-400 to-indigo-600 
+            <input v-model="searchInput" type="text" placeholder="Поиск" class="bg-gradient-to-b from-indigo-400 to-indigo-600 
                     w-[500px] placeholder:text-sm placeholder:text-white outline-none rounded-[4px] p-4 
                     text-white shadow-xl">
         </div>

@@ -1,9 +1,10 @@
 <script setup>
-    import { ref, onMounted } from 'vue'
+    import { ref, onMounted, watch } from 'vue'
+    import { useDebounceFn } from "@vueuse/core"
 
     import NavBar from '../NavBarItems/NavBar.vue';
     import Wrapper from '../Slots/Wrapper.vue';
-    import TaskUnCompleted from '../TasksTemplates/TaskUnCompleted.vue';
+    import UnCompletedTasks from '../TasksTemplates/UnCompletedTasks.vue';
     import BaseDeleteModal from '../Modals/BaseDeleteModal.vue';
 
     const userId = localStorage.getItem('userId')
@@ -19,18 +20,20 @@
     const urlUserTasks = ref(`http://localhost:3000/tasks?userId=${userId}`)
     const urlTasks = ref(`http://localhost:3000/tasks`)
 
+    const searchInput = ref('')
+
     const deleteTaskModalVisible = ref(false)
 
     const sortByNewTasks = async () => {
         const res = await fetch(urlUserTasks.value)
         const data = await res.json()
-        userTasks.value = data.sort((a, b) => new Date(b.dateCreatedTask) - new Date(a.dateCreatedTask))
+        unCompletedUserTasks.value = data.sort((a, b) => new Date(b.dateCreatedTask) - new Date(a.dateCreatedTask))
     }
 
     const sortByOldTasks = async () => {
         const res = await fetch(urlUserTasks.value)
         const data = await res.json()
-        userTasks.value = data.sort((a, b) => new Date(a.dateCreatedTask) - new Date(b.dateCreatedTask))
+        unCompletedUserTasks.value = data.sort((a, b) => new Date(a.dateCreatedTask) - new Date(b.dateCreatedTask))
     }
 
     const getUser = async () => {
@@ -104,15 +107,19 @@
 
             const newCompletedCurrent = user.value.completedTasksCurrent + 1
             
-            await fetch(urlUser.value, {
+            const resUser = await fetch(urlUser.value, {
                 method: 'PATCH',
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    completedTasksCurrent: newCompletedCurrent,
+                    completedTasksCurrent: newCompletedCurrent
                 })
             })
+
+            if(!resUser.ok){
+                throw new Error(`Ошибка HTTP: ${resUser.status}`);
+            }
 
             await getUser()
 
@@ -153,7 +160,7 @@
 
             const newInProgressCurrent = user.value.inProgressTasksCurrent + 1
             
-            await fetch(urlUser.value, {
+            const resUser = await fetch(urlUser.value, {
                 method: 'PATCH',
                 headers: {
                     "Content-Type": "application/json",
@@ -162,6 +169,10 @@
                     inProgressTasksCurrent: newInProgressCurrent
                 })
             })
+
+            if(!resUser.ok){
+                throw new Error(`Ошибка HTTP: ${resUser.status}`);
+            }
 
             await getUser()
 
@@ -190,21 +201,6 @@
             userTasks.value = userTasks.value.filter(t => t.id !== userTaskId.value)
             unCompletedUserTasks.value = unCompletedUserTasks.value.filter(t => t.id !== userTaskId.value)
 
-
-            const newAllCurrent = user.value.allTasksCurrent - 1
-
-            await fetch(urlUser.value, {
-                method: 'PATCH',
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    allTasksCurrent: newAllCurrent
-                })
-            })
-
-            await getUser()
-
             hideDeleteTaskModal()
         }catch(error){
             console.log('Не удалось обновить данные', error)
@@ -217,6 +213,42 @@
         deleteTaskModalVisible.value = false
     }
 
+    const searchTasks = async () => {
+        const query = searchInput.value
+
+        try{
+            if(!query){
+                getUserTasks()
+                return
+            }
+            
+            const res = await fetch(`${urlUserTasks.value}&habit=${query}`, {
+                method: 'GET'
+            })
+
+            if(!res.ok){
+                throw new Error(`Ошибка HTTP: ${res.status}`);
+            }
+
+            const data = await res.json()
+            unCompletedUserTasks.value = data.sort((a, b) => new Date(b.dateCreatedTask) - new Date(a.dateCreatedTask))
+        }catch(error){
+            console.log('Не удалось найти данные', error)
+        }
+    }
+
+    const debouncedSearch = useDebounceFn(() => {
+        searchTasks()
+    }, 500)
+
+watch(searchInput, (newValue) => {
+    if(newValue){
+        debouncedSearch()
+    }else{
+        getUnCompletedUserTasks()
+    }
+})
+
 onMounted(async () => {
     await getUserTasks();
     await getUnCompletedUserTasks();
@@ -226,10 +258,10 @@ onMounted(async () => {
 
 <template>
     <Wrapper>
-        <NavBar @sort-by-new="sortByNewTasks" @sort-by-old="sortByOldTasks" />
+        <NavBar v-model:search-input="searchInput" @sort-by-new="sortByNewTasks" @sort-by-old="sortByOldTasks" />
             <div class="flex justify-center pt-15">
                 <ul class="grid grid-cols-4 gap-15 overflow-y-auto h-[580px] no-scrollbar pt-15">
-                    <TaskUnCompleted v-for="unCompletedUserTask in unCompletedUserTasks" :key="unCompletedUserTask.id" 
+                    <UnCompletedTasks v-for="unCompletedUserTask in unCompletedUserTasks" :key="unCompletedUserTask.id" 
                         :un-completed-user-task="unCompletedUserTask" @delete-task="showDeleteTaskModal" 
                         @add-in-complete="addInComplete" @add-in-progress="addInProgress"/>
                 </ul>

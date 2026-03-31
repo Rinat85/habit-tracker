@@ -41,7 +41,8 @@
                         'bg-purple-500 text-white': unCompletedUserTask.progress === 'В процессе',
                         'bg-rose-500 text-white': unCompletedUserTask.progress === 'Не выполнено'
                     }">{{ unCompletedUserTask.progress }}</p>
-                <TaskOptions @delete-task="deleteTask(unCompletedUserTask.id)" @add-in-complete="addInComplete(unCompletedUserTask.id)"
+                <TaskOptions @delete-task="deleteTask(unCompletedUserTask.id)" 
+                            @add-in-complete="addInComplete(unCompletedUserTask.id)"
                             @add-in-progress="addInProgress(unCompletedUserTask.id)" />
             </div>
         </li>

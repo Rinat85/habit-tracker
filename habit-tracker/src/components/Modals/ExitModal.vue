@@ -1,4 +1,6 @@
 <script setup>
+import BaseButton from '../BaseButton/BaseButton.vue';
+
     const props = defineProps({
         message: {
             type: String
@@ -18,16 +20,8 @@
             <div class="flex flex-col justify-center items-center gap-y-8 pt-12">
                 <h2 class="text-2xl text-center">{{ message }}</h2>
                 <div class="flex justify-center gap-6">
-                    <button @click="cancel" class="px-10 py-3 text-white rounded-lg bg-gradient-to-br 
-                            from-rose-400 to-rose-600 shadow-xl shadow-rose-500/40
-                            active:scale-95 transition">
-                        Нет
-                    </button>
-                    <button @click="confirm" class="px-11 py-3 text-white rounded-lg bg-gradient-to-br 
-                            from-indigo-400 to-indigo-600 shadow-xl shadow-indigo-500/40
-                            active:scale-95 transition">
-                        Да
-                    </button>
+                    <BaseButton button-type="Нет" variant="cancelExitModal" @click="cancel" />
+                    <BaseButton button-type="Да" variant="confirmExitModal" @click="confirm" />
                 </div>
             </div>
         </div>
