@@ -9,6 +9,16 @@
       "inProgressTasksCurrent": 0,
       "completedTasksCurrent": 5,
       "dateCreation": "2026-03-30T11:52:16.125Z"
+    },
+    {
+      "id": "df06",
+      "userName": "qwerty",
+      "eMail": "qwerty@gmail.com",
+      "password": "$2b$10$P.5Z4cEHUJ3yhnW8u2pJ4.Osv9Hh79CJ0uqMvT7QBc3NQdb1MorSu",
+      "allTasksCurrent": 1,
+      "inProgressTasksCurrent": 0,
+      "completedTasksCurrent": 0,
+      "dateCreation": "2026-04-02T10:31:54.965Z"
     }
   ],
   "tasks": [
@@ -21,6 +31,16 @@
       "progress": "Не выполнено",
       "dateCreatedTask": "2026-03-30T11:52:02.008Z",
       "userId": "33b6"
+    },
+    {
+      "id": "d256",
+      "habit": "asd",
+      "time": "12",
+      "category": "adsad asdsa",
+      "frequency": "Ежедневно",
+      "progress": "Не выполнено",
+      "dateCreatedTask": "2026-04-02T10:32:25.729Z",
+      "userId": "df06"
     }
   ]
 }
