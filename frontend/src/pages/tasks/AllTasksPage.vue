@@ -1,59 +1,17 @@
 <script setup>
-import { onMounted, watch } from 'vue';
-import { useDebounceFn } from '@vueuse/core';
+import { onMounted } from 'vue';
 import { useAuthStore } from '@/app/store/useAuthStore';
 import { useTasksStore } from '@/app/store/useTasksStore';
-import { useConfirmDialog } from '@/shared/composables/useConfirmDialog';
+import { useTaskSearch } from '@/features/tasks/composables/useTaskSearch';
+import { useTaskActions } from '@/features/tasks/composables/useTaskActions';
 import TaskCard from '@/features/tasks/TaskCard.vue';
 import ConfirmModal from '@/shared/ui/ConfirmModal.vue';
 import NavBar from '@/features/navigation/NavBar.vue';
 
 const authStore = useAuthStore();
 const tasksStore = useTasksStore();
-const deleteDialog = useConfirmDialog();
-
-const searchInput = defineModel('searchInput', { default: '' });
-
-const debouncedSearch = useDebounceFn((query) => {
-  tasksStore.searchTasks(query);
-}, 500);
-
-watch(searchInput, (val) => {
-  if (val) {
-    debouncedSearch(val);
-  } else {
-    tasksStore.fetchTasks();
-  }
-});
-
-const handleDelete = (taskId) => {
-  deleteDialog.show('Хотите удалить привычку?', taskId);
-};
-
-const confirmDelete = async () => {
-  try {
-    await tasksStore.deleteTask(deleteDialog.targetId.value);
-  } catch (error) {
-    console.error('Не удалось удалить', error);
-  }
-  deleteDialog.hide();
-};
-
-const handleMarkCompleted = async (taskId) => {
-  try {
-    await tasksStore.markAsCompleted(taskId);
-  } catch (error) {
-    console.error('Ошибка', error);
-  }
-};
-
-const handleMarkInProgress = async (taskId) => {
-  try {
-    await tasksStore.markAsInProgress(taskId);
-  } catch (error) {
-    console.error('Ошибка', error);
-  }
-};
+const { searchInput } = useTaskSearch();
+const { deleteDialog, handleMarkCompleted, handleMarkInProgress, handleDelete, confirmDelete } = useTaskActions();
 
 onMounted(async () => {
   await authStore.loadUser();

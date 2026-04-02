@@ -1,9 +1,8 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { onMounted } from 'vue';
 import { useAuthStore } from '@/app/store/useAuthStore';
 import { useTasksStore } from '@/app/store/useTasksStore';
-import { MONTH_NAMES } from '@/shared/utils/constants';
-import { isSameDay } from '@/shared/utils/formatters';
+import { useCalendar } from '@/features/calendar/composables/useCalendar';
 import CalendarGrid from '@/features/calendar/CalendarGrid.vue';
 import DayTasksModal from '@/features/calendar/DayTasksModal.vue';
 import NavMenu from '@/features/navigation/NavMenu.vue';
@@ -11,34 +10,16 @@ import NavMenu from '@/features/navigation/NavMenu.vue';
 const authStore = useAuthStore();
 const tasksStore = useTasksStore();
 
-const currentDate = ref(new Date());
-const selectedDay = ref(null);
-const dayModalVisible = ref(false);
-
-const currentMonth = computed(() => currentDate.value.getMonth());
-const currentYear = computed(() => currentDate.value.getFullYear());
-const monthName = computed(() => MONTH_NAMES[currentMonth.value]);
-
-const prevMonth = () => {
-  currentDate.value = new Date(currentYear.value, currentMonth.value - 1, 1);
-};
-
-const nextMonth = () => {
-  currentDate.value = new Date(currentYear.value, currentMonth.value + 1, 1);
-};
-
-const selectDay = (day) => {
-  if (!day) return;
-  selectedDay.value = day;
-  dayModalVisible.value = true;
-};
-
-const tasksOfSelectedDay = computed(() => {
-  if (!selectedDay.value) return [];
-  return tasksStore.tasks.filter((t) =>
-    isSameDay(t.dateCreatedTask, selectedDay.value, currentMonth.value, currentYear.value),
-  );
-});
+const {
+  currentDate,
+  selectedDay,
+  dayModalVisible,
+  monthName,
+  prevMonth,
+  nextMonth,
+  selectDay,
+  tasksOfSelectedDay,
+} = useCalendar();
 
 onMounted(async () => {
   await authStore.loadUser();

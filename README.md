@@ -21,9 +21,14 @@ Habit-Tracker/
 ├── frontend/                   # Vue 3 + Vite
 │   └── src/
 │       ├── app/                # Layouts, Router, Store, Стили
-│       ├── features/           # Бизнес-компоненты (tasks, calendar, navigation, profile)
+│       ├── features/           # Бизнес-компоненты
+│       │   ├── tasks/          # UI, composables для задач
+│       │   ├── calendar/       # UI, composables для календаря
+│       │   ├── navigation/     # NavBar, NavMenu
+│       │   └── profile/        # ProfileStats, ProfileSettings
 │       ├── pages/              # Страницы (auth, home, tasks, calendar, profile)
-│       └── shared/             # API-слой, UI-компоненты, утилиты, composables
+│       └── shared/             # API-слой, UI-компоненты, утилиты
+│           └── composables/    # Общие composables (напр. useConfirmDialog)
 │
 ├── backend/                    # Express.js API
 │   └── src/
